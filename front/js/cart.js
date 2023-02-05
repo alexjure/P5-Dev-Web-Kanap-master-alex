@@ -96,14 +96,17 @@ function changeProductQuantityCart(element, event) {
     let oldQuantity = element.dataset.oldValue;
     element.dataset.oldValue = newQuantity;
 
-    
-    for (let j = 0; j < cart.length; j++) {
-        if (cart[j].id === productId && cart[j].color === productColor) {
-            cart[j].quantity = newQuantity
-            localStorage.setItem('products', JSON.stringify(cart))
+    if(newQuantity > 100 || newQuantity <= 0)  {
+        alert('Quantité invalide');
+    }else{
+        for (let j = 0; j < cart.length; j++) {
+            if (cart[j].id === productId && cart[j].color === productColor) {
+                cart[j].quantity = newQuantity
+                localStorage.setItem('products', JSON.stringify(cart))
+            }
         }
+        calculTotal(productId, oldQuantity, newQuantity);
     }
-    calculTotal(productId, oldQuantity, newQuantity);
 }
 
 // Fonction de suppression de produit
@@ -173,7 +176,7 @@ let inputFirstname = document.getElementById("firstName");
 let regexString = new RegExp(/^[A-Za-z\s]{2,}$/);
 
 // Regex pour l'adresse
-let regexAdress = new RegExp(/^[A-Za-z0-9\s]{2,}$/);
+let regexAdress = new RegExp(/^[0-9]{5}\s[A-Za-z\u00C0-\u00FF\s'-]+$/);
 
 inputFirstname.addEventListener('change', function () {
     firstnameValidation(this.value);
